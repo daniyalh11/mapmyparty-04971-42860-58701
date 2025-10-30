@@ -1,28 +1,26 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Eye, MoreVertical, Calendar } from "lucide-react";
+import { Search, Eye, Calendar, Trash2, CheckCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import eventMusic from "@/assets/event-music.jpg";
 import eventConference from "@/assets/event-conference.jpg";
 import eventFood from "@/assets/event-food.jpg";
 import { useEvents } from "@/hooks/useEvents";
+import EventDetailModal from "./EventDetailModal";
+import { toast } from "sonner";
 
 const PromoterEvents = () => {
   const navigate = useNavigate();
-  const { events } = useEvents();
+  const { events, deleteEvent } = useEvents();
   const [statusFilter, setStatusFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedEvent, setSelectedEvent] = useState<any>(null);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
   const allOrganizerEvents = [
     {
@@ -99,6 +97,22 @@ const PromoterEvents = () => {
                          event.organizer.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesStatus && matchesCategory && matchesSearch;
   });
+
+  const handleViewDetail = (event: any) => {
+    setSelectedEvent(event);
+    setIsDetailModalOpen(true);
+  };
+
+  const handleVerifyEvent = (eventId: string, eventTitle: string) => {
+    toast.success(`Event "${eventTitle}" has been verified!`);
+  };
+
+  const handleDeleteEvent = (eventId: string, eventTitle: string) => {
+    if (window.confirm(`Are you sure you want to delete "${eventTitle}"?`)) {
+      deleteEvent(eventId);
+      toast.success(`Event "${eventTitle}" has been deleted`);
+    }
+  };
 
   return (
     <Card>
@@ -188,30 +202,9 @@ const PromoterEvents = () => {
                           {event.date}
                         </p>
                       </div>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <MoreVertical className="w-4 h-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem 
-                            onClick={() => navigate(`/events/${event.id}`)}
-                          >
-                            <Eye className="w-4 h-4 mr-2" />
-                            View Details
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            {event.promoted ? "Remove Promotion" : "Promote Event"}
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            Manage Visibility
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-4">
+                    <div className="grid grid-cols-3 gap-4 mb-4">
                       <div>
                         <p className="text-sm text-muted-foreground mb-1">
                           Tickets Sold
@@ -239,6 +232,34 @@ const PromoterEvents = () => {
                         </p>
                       </div>
                     </div>
+
+                    <div className="flex gap-2 pt-3 border-t">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleViewDetail(event)}
+                      >
+                        <Eye className="w-4 h-4 mr-2" />
+                        View Detail
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleVerifyEvent(event.id, event.title)}
+                      >
+                        <CheckCircle className="w-4 h-4 mr-2" />
+                        Verify Event
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleDeleteEvent(event.id, event.title)}
+                        className="text-destructive hover:text-destructive"
+                      >
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        Delete
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </Card>
@@ -246,6 +267,14 @@ const PromoterEvents = () => {
           </div>
         )}
       </CardContent>
+
+      {selectedEvent && (
+        <EventDetailModal
+          isOpen={isDetailModalOpen}
+          onClose={() => setIsDetailModalOpen(false)}
+          event={selectedEvent}
+        />
+      )}
     </Card>
   );
 };

@@ -6,6 +6,8 @@ import PromoterEvents from "@/components/promoter/PromoterEvents";
 import PromoterOrganizers from "@/components/promoter/PromoterOrganizers";
 import PromoterAnalytics from "@/components/promoter/PromoterAnalytics";
 import PromoterLiveEvents from "@/components/promoter/PromoterLiveEvents";
+import PromoterTopPerformers from "@/components/promoter/PromoterTopPerformers";
+import PromoterUsers from "@/components/promoter/PromoterUsers";
 
 const PromoterDashboard = () => {
   return (
@@ -22,17 +24,18 @@ const PromoterDashboard = () => {
           </div>
 
           <Tabs defaultValue="overview" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-5 lg:w-auto">
+            <TabsList className="grid w-full grid-cols-6 lg:w-auto">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="events">Events</TabsTrigger>
               <TabsTrigger value="organizers">Organizers</TabsTrigger>
               <TabsTrigger value="analytics">Analytics</TabsTrigger>
               <TabsTrigger value="live">Live Events</TabsTrigger>
+              <TabsTrigger value="users">Users</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="space-y-6">
               <PromoterOverview />
-              <PromoterLiveEvents />
+              <PromoterTopPerformers />
             </TabsContent>
 
             <TabsContent value="events">
@@ -49,6 +52,10 @@ const PromoterDashboard = () => {
 
             <TabsContent value="live">
               <PromoterLiveEvents />
+            </TabsContent>
+
+            <TabsContent value="users">
+              <PromoterUsers />
             </TabsContent>
           </Tabs>
         </div>
