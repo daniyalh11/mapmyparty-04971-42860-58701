@@ -180,7 +180,7 @@ const PromoterEvents = () => {
                   <div className="flex-1 p-6">
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
+                        <div className="flex items-center gap-2 mb-2 flex-wrap">
                           <h3 className="text-xl font-bold">
                             {event.title}
                           </h3>
@@ -201,6 +201,40 @@ const PromoterEvents = () => {
                         <p className="text-sm text-muted-foreground">
                           {event.date}
                         </p>
+                      </div>
+                      <div className="flex gap-2 ml-4">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => navigate(`/promoter/event/${event.id}`)}
+                        >
+                          <Eye className="w-4 h-4 mr-1" />
+                          View Detail
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleViewDetail(event)}
+                        >
+                          Analytics
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleVerifyEvent(event.id, event.title)}
+                        >
+                          <CheckCircle className="w-4 h-4 mr-1" />
+                          Verify
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleDeleteEvent(event.id, event.title)}
+                          className="text-destructive hover:text-destructive"
+                        >
+                          <Trash2 className="w-4 h-4 mr-1" />
+                          Delete
+                        </Button>
                       </div>
                     </div>
 
@@ -233,33 +267,6 @@ const PromoterEvents = () => {
                       </div>
                     </div>
 
-                    <div className="flex gap-2 pt-3 border-t">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleViewDetail(event)}
-                      >
-                        <Eye className="w-4 h-4 mr-2" />
-                        View Detail
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleVerifyEvent(event.id, event.title)}
-                      >
-                        <CheckCircle className="w-4 h-4 mr-2" />
-                        Verify Event
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleDeleteEvent(event.id, event.title)}
-                        className="text-destructive hover:text-destructive"
-                      >
-                        <Trash2 className="w-4 h-4 mr-2" />
-                        Delete
-                      </Button>
-                    </div>
                   </div>
                 </div>
               </Card>

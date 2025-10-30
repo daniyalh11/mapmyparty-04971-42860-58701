@@ -10,6 +10,7 @@ import Auth from "./pages/Auth";
 import UserDashboard from "./pages/UserDashboard";
 import OrganizerDashboard from "./pages/OrganizerDashboard";
 import PromoterDashboard from "./pages/PromoterDashboard";
+import PromoterEventDetail from "./pages/PromoterEventDetail";
 import CreateEvent from "./pages/CreateEvent";
 import EventTypeSelection from "./pages/EventTypeSelection";
 import NotFound from "./pages/NotFound";
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/dashboard" element={<UserDashboard />} />
           <Route path="/organizer/dashboard" element={<OrganizerDashboard />} />
           <Route path="/promoter/dashboard" element={<PromoterDashboard />} />
+          <Route path="/promoter/event/:id" element={<PromoterEventDetail />} />
           <Route path="/organizer/select-event-type" element={<EventTypeSelection />} />
           <Route path="/organizer/create-event" element={<CreateEvent />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
